@@ -3,7 +3,7 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
 " Declare the list of plugins.
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pairs', 'coc-haxe', 'coc-java']  " list of CoC extensions needed
+" let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pairs', 'coc-haxe']  " list of CoC extensions needed
 
 " switching to coc-pairs
 " Plug 'jiangmiao/auto-pairs' "this will auto close ( [ {
@@ -39,8 +39,14 @@ Plug 'nvim-treesitter/nvim-tree-docs'
 " Github Copilot entities
 Plug 'github/copilot.vim'
 
+" View md files
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+
 " List ends here. Plugins become visible to VIM after this call.
 call plug#end()
+
+" Fix issue with using bash instead of cmd as default shell
+let $TMP="/tmp"
 
 nnoremap <leader>cd :lcd %:h<CR>
 
@@ -137,3 +143,5 @@ nnoremap <leader>tt :NvimTreeToggle<CR>
 " shortcuts for decoding/encoding HTML
 :cabbr hencode :call HTMLEncode()
 :cabbr hdecode :call HTMLDecode()
+
+nnoremap <leader>md :MarkdownPreviewToggle<CR>
