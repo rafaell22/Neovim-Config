@@ -4,9 +4,13 @@ require'nvim-web-devicons'.get_icons()
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-local function on_attach(bufnr)
-  local api = require('nvim-tree.api')
+-- Automatically open file on creation
+local api = require("nvim-tree.api")
+api.events.subscribe(api.events.Event.FileCreated, function(file)
+  vim.cmd("edit " .. file.fname)
+end)
 
+local function on_attach(bufnr)
   local function opts(desc)
     return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
   end
@@ -20,8 +24,6 @@ local function on_attach(bufnr)
   vim.keymap.set('n', '<C-k>', api.node.show_info_popup,              opts('Info'))
   vim.keymap.set('n', '<C-r>', api.fs.rename_sub,                     opts('Rename: Omit Filename'))
   vim.keymap.set('n', '<C-t>', api.node.open.tab,                     opts('Open: New Tab'))
-  vim.keymap.set('n', '<C-v>', api.node.open.vertical,                opts('Open: Vertical Split'))
-  vim.keymap.set('n', '<C-x>', api.node.open.horizontal,              opts('Open: Horizontal Split'))
   vim.keymap.set('n', '<BS>',  api.node.navigate.parent_close,        opts('Close Directory'))
   vim.keymap.set('n', '<CR>',  api.node.open.edit,                    opts('Open'))
   vim.keymap.set('n', '<Tab>', api.node.open.preview,                 opts('Open Preview'))
@@ -75,20 +77,15 @@ local function on_attach(bufnr)
   -- You will need to insert "your code goes here" for any mappings with a custom action_cb
   vim.keymap.set('n', '<C-h>', api.node.open.horizontal, opts('Open: Horizontal Split'))
   vim.keymap.set('n', '<C-x>', api.node.open.vertical, opts('Open: Vertical Split'))
-
 end
 
 -- empty setup using defaults
 local nvim_tree = require('nvim-tree')
-nvim_tree.setup({
-  on_attach = on_attach,
-})
+nvim_tree.setup()
 nvim_tree.setup {
 	-- auto_close = true,
-    --open_on_setup = true,
-    open_on_tab = true,
-	-- Creating a file when the cursor is on a closed folder will set the path to be inside the closed folder
-	--create_in_closed_folder = true,
+	on_attach = on_attach,
+	open_on_tab = true,
 	hijack_cursor = true,
 	git = {
 		enable = true
@@ -101,6 +98,14 @@ nvim_tree.setup {
 			}
 		}
 	},
+	view = {
+		mappings = {
+			list = {
+				{ key = "<C-h>", action = "split" },
+				{ key = "<C-x>", action = "vsplit" }
+			}
+		}
+	}
 }
 
 require "nvim-treesitter.configs".setup {
@@ -128,7 +133,21 @@ require "nvim-treesitter.configs".setup {
   }
 }
 
-local function open_nvim_tree()
+local function open_nvim_tree(data)
+  -- buffer is a [No Name]
+  local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
+
+  -- buffer is a directory
+  local directory = vim.fn.isdirectory(data.file) == 1
+
+  if not no_name and not directory then
+    return
+  end
+
+  -- change to the directory
+  if directory then
+    vim.cmd.cd(data.file)
+  end
 
   -- open the tree
   require("nvim-tree.api").tree.open()
