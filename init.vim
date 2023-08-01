@@ -37,16 +37,13 @@ Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-tree-docs'
 
 " Github Copilot entities
-Plug 'github/copilot.vim'
+" Plug 'github/copilot.vim'
 
 " View md files
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
 " List ends here. Plugins become visible to VIM after this call.
 call plug#end()
-
-" Fix issue with using bash instead of cmd as default shell
-let $TMP="/tmp"
 
 nnoremap <leader>cd :lcd %:h<CR>
 
@@ -77,7 +74,7 @@ inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
 " set editor env variables
-set tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab
+set tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
 set fillchars+=vert:│
 set number
 set relativenumber
