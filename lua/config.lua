@@ -104,7 +104,8 @@ nvim_tree.setup {
 				{ key = "<C-h>", action = "split" },
 				{ key = "<C-x>", action = "vsplit" }
 			}
-		}
+		},
+		relativenumber = true
 	}
 }
 
