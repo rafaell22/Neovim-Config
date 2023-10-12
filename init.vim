@@ -42,6 +42,9 @@ Plug 'nvim-treesitter/nvim-tree-docs'
 " View md files
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
+" Codium LLVM code suggestions
+Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
+
 " List ends here. Plugins become visible to VIM after this call.
 call plug#end()
 
@@ -125,7 +128,10 @@ vnoremap <S-Tab> <<
 vnoremap <Tab> >
 
 " add semi-colon at the end of the current line
-nnoremap ; <End>a;<Esc>
+nnoremap <leader>; <End>a;<Esc>
+
+" add new lineahead of cursor position
+nnoremap <leader><CR> a<CR><Up><End><CR>
 
 " enter virtual mode and select everything from cursor forward
 inoremap <S-End> <Esc>v$
