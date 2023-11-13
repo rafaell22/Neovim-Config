@@ -43,7 +43,7 @@ Plug 'nvim-treesitter/nvim-tree-docs'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
 " Codium LLVM code suggestions
-Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
+" Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
 
 " List ends here. Plugins become visible to VIM after this call.
 call plug#end()
