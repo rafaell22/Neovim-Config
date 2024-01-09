@@ -99,12 +99,6 @@ nvim_tree.setup {
 		}
 	},
 	view = {
-		mappings = {
-			list = {
-				{ key = "<C-h>", action = "split" },
-				{ key = "<C-x>", action = "vsplit" }
-			}
-		},
 		relativenumber = true
 	}
 }

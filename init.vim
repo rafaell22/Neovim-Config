@@ -1,3 +1,5 @@
+let mapleader=" "
+
 " Plugins will be downloaded under the specified directory.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
@@ -5,17 +7,11 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pairs', 'coc-haxe']  " list of CoC extensions needed
 
-" switching to coc-pairs
-" Plug 'jiangmiao/auto-pairs' "this will auto close ( [ {
-
 " icons to show in file tree
 Plug 'nvim-tree/nvim-web-devicons' "icons for file tree
 
 " file tree
 Plug 'nvim-tree/nvim-tree.lua'
-
-" file content minimap
-Plug 'wfxr/minimap.vim'
 
 " Bottom status bar
 Plug 'vim-airline/vim-airline'
@@ -43,7 +39,7 @@ Plug 'nvim-treesitter/nvim-tree-docs'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
 " Codium LLVM code suggestions
-Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
+" Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
 
 " List ends here. Plugins become visible to VIM after this call.
 call plug#end()
@@ -52,15 +48,7 @@ nnoremap <leader>cd :lcd %:h<CR>
 
 lua require('config')
 
-" configure minimap
-let g:minimap_width = 10
-let g:minimap_auto_start = 1
-let g:minimap_auto_start_win_enter = 1
-let g:minimap_highlight_range = 1
-let g:minimap_highlight_search = 1
-let g:minimap_git_colors = 1
-
-nnoremap <silent> <leader>nhl :nohlsearch<CR>:call minimap#vim#ClearColorSearch()<CR>
+nnoremap <silent> <leader>nhl :nohlsearch<CR>
 nnoremap <silent> <leader>j :CocCommand formatJson<CR>
 
 function! CheckBackspace() abort
