@@ -32,14 +32,11 @@ Plug 'gcmt/taboo.vim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-tree-docs'
 
-" Github Copilot entities
-" Plug 'github/copilot.vim'
-
 " View md files
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
-" Codium LLVM code suggestions
-" Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
+" ctags
+Plug 'ludovicchabant/vim-gutentags'
 
 " List ends here. Plugins become visible to VIM after this call.
 call plug#end()
@@ -69,6 +66,7 @@ set tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
 set fillchars+=vert:│
 set number
 set relativenumber
+set clipboard=unnamed
 
 " highlight VertSplit guibg=Orange guifg=Black ctermbg=6 ctermfg=0
 highlight VertSplit ctermbg=NONE guibg=NONE
@@ -93,13 +91,13 @@ noremap <C-t> <Esc>:tabnew<CR>
 noremap <C-F4> <Esc>:tabclose<CR>
 
 " paste buffer content when in insert mode
-inoremap <C-p> <Esc>pbi
+inoremap <C-v> <Esc>pbi
 
 " copy v-mode selected content to windows clipboard
-noremap <leader>c "*y
+noremap <C-c> "*y
 
 " paste from windows buffer
-noremap <leader>p "*p
+noremap <C-v> "*p
 
 " select all content in file
 noremap <leader>all ggVG
@@ -118,7 +116,7 @@ vnoremap <Tab> >
 " add semi-colon at the end of the current line
 nnoremap <leader>; <End>a;<Esc>
 
-" add new lineahead of cursor position
+" add new line ahead of cursor position
 nnoremap <leader><CR> a<CR><Up><End><CR>
 
 " enter virtual mode and select everything from cursor forward
@@ -127,6 +125,8 @@ nnoremap <S-End> <Esc>v$
 
 " undo change in insert mode
 inoremap <C-z> <Esc>ui
+nnoremap <C-z> u
+nnoremap <C-S-z> <C-r>
 
 " toggle nerd tree
 nnoremap <leader>tt :NvimTreeToggle<CR>
@@ -136,3 +136,9 @@ nnoremap <leader>tt :NvimTreeToggle<CR>
 :cabbr hdecode :call HTMLDecode()
 
 nnoremap <leader>md :MarkdownPreviewToggle<CR>
+
+" switch between split windows
+nnoremap <c-Left> <c-w><Left>
+nnoremap <c-Up> <c-w><Up>
+nnoremap <c-Right> <c-w><Right>
+nnoremap <c-Down> <c-w><Down>
