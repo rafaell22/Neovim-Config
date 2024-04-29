@@ -35,8 +35,11 @@ Plug 'nvim-treesitter/nvim-tree-docs'
 " View md files
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
-" ctags
-Plug 'ludovicchabant/vim-gutentags'
+" ctags - Todo: Learn how to use it and then re-install
+" Plug 'ludovicchabant/vim-gutentags'
+
+" ripgrep (text search)
+Plug 'jremmen/vim-ripgrep'
 
 " List ends here. Plugins become visible to VIM after this call.
 call plug#end()
