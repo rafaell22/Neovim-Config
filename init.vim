@@ -8,16 +8,28 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pairs', 'coc-haxe']  " list of CoC extensions needed
 
 " icons to show in file tree
-Plug 'nvim-tree/nvim-web-devicons' "icons for file tree
+if exists('g:vscode') 
+else
+	Plug 'nvim-tree/nvim-web-devicons' "icons for file tree
+endif
 
 " file tree
-Plug 'nvim-tree/nvim-tree.lua'
+if exists('g:vscode') 
+else
+	Plug 'nvim-tree/nvim-tree.lua'
+endif
 
 " Bottom status bar
-Plug 'vim-airline/vim-airline'
+if exists('g:vscode') 
+else
+	Plug 'vim-airline/vim-airline'
+endif
 
 " Git functions
-Plug 'tpope/vim-fugitive'
+if exists('g:vscode') 
+else
+	Plug 'tpope/vim-fugitive'
+endif
 
 " comment code
 Plug 'preservim/nerdcommenter'
@@ -26,7 +38,10 @@ Plug 'preservim/nerdcommenter'
 Plug 'sheerun/vim-polyglot'
 
 " util functions for tabs (ex. renaming)
-Plug 'gcmt/taboo.vim'
+if exists('g:vscode') 
+else
+	Plug 'gcmt/taboo.vim'
+end
 
 " for custom comment blocks
 Plug 'nvim-treesitter/nvim-treesitter'
@@ -40,6 +55,18 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
 " ripgrep (text search)
 Plug 'jremmen/vim-ripgrep'
+
+" for Prettier
+if exists('g:vscode') 
+else
+	" post install (yarn install | npm install) then load plugin only for editing supported files
+	Plug 'prettier/vim-prettier', {
+	  \ 'do': 'yarn install --frozen-lockfile --production',
+	  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+end
+
+" vim-unimpaired - keymappings for navigation
+Plug 'tpope/vim-unimpaired'
 
 " List ends here. Plugins become visible to VIM after this call.
 call plug#end()
@@ -70,6 +97,7 @@ set fillchars+=vert:│
 set number
 set relativenumber
 set clipboard=unnamed
+set fileformats=unix,dos
 
 " highlight VertSplit guibg=Orange guifg=Black ctermbg=6 ctermfg=0
 highlight VertSplit ctermbg=NONE guibg=NONE
@@ -145,3 +173,14 @@ nnoremap <c-Left> <c-w><Left>
 nnoremap <c-Up> <c-w><Up>
 nnoremap <c-Right> <c-w><Right>
 nnoremap <c-Down> <c-w><Down>
+
+" prettier
+let g:prettier#autoformat = 0
+let g:prettier#autoformat_require_pragma = 0
+
+" when running at every change you may want to disable quickfix
+let g:prettier#quickfix_enabled = 0
+
+" navigate coc errors
+nmap <silent> <Leader>j <Plug>(coc-diagnostic-next-error)
+nmap <silent> <Leader>k <Plug>(coc-diagnostic-prev-error)
