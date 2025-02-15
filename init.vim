@@ -8,28 +8,16 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pairs', 'coc-haxe']  " list of CoC extensions needed
 
 " icons to show in file tree
-if exists('g:vscode') 
-else
-	Plug 'nvim-tree/nvim-web-devicons' "icons for file tree
-endif
+Plug 'nvim-tree/nvim-web-devicons' "icons for file tree
 
 " file tree
-if exists('g:vscode') 
-else
-	Plug 'nvim-tree/nvim-tree.lua'
-endif
+Plug 'nvim-tree/nvim-tree.lua'
 
 " Bottom status bar
-if exists('g:vscode') 
-else
-	Plug 'vim-airline/vim-airline'
-endif
+Plug 'nvim-lualine/lualine.nvim'
 
 " Git functions
-if exists('g:vscode') 
-else
-	Plug 'tpope/vim-fugitive'
-endif
+Plug 'tpope/vim-fugitive'
 
 " comment code
 Plug 'preservim/nerdcommenter'
@@ -38,10 +26,7 @@ Plug 'preservim/nerdcommenter'
 Plug 'sheerun/vim-polyglot'
 
 " util functions for tabs (ex. renaming)
-if exists('g:vscode') 
-else
-	Plug 'gcmt/taboo.vim'
-end
+Plug 'gcmt/taboo.vim'
 
 " for custom comment blocks
 Plug 'nvim-treesitter/nvim-treesitter'
@@ -50,20 +35,14 @@ Plug 'nvim-treesitter/nvim-tree-docs'
 " View md files
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
-" ctags - Todo: Learn how to use it and then re-install
-" Plug 'ludovicchabant/vim-gutentags'
-
 " ripgrep (text search)
 Plug 'jremmen/vim-ripgrep'
 
 " for Prettier
-if exists('g:vscode') 
-else
-	" post install (yarn install | npm install) then load plugin only for editing supported files
-	Plug 'prettier/vim-prettier', {
-	  \ 'do': 'yarn install --frozen-lockfile --production',
-	  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
-end
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', {
+	\ 'do': 'yarn install --frozen-lockfile --production',
+	\ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 
 " vim-unimpaired - keymappings for navigation
 Plug 'tpope/vim-unimpaired'
