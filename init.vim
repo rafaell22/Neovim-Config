@@ -3,6 +3,8 @@ let mapleader=" "
 " Plugins will be downloaded under the specified directory.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
+Plug 'neovim/nvim-lspconfig'
+
 " Declare the list of plugins.
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pairs', 'coc-haxe']  " list of CoC extensions needed
@@ -16,36 +18,31 @@ Plug 'nvim-tree/nvim-tree.lua'
 " Bottom status bar
 Plug 'nvim-lualine/lualine.nvim'
 
-" Git functions
-Plug 'tpope/vim-fugitive'
-
 " comment code
 Plug 'preservim/nerdcommenter'
 
 " Syntax highlight
 Plug 'sheerun/vim-polyglot'
 
-" util functions for tabs (ex. renaming)
-Plug 'gcmt/taboo.vim'
-
-" for custom comment blocks
+" for syntax highlight
 Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'nvim-treesitter/nvim-tree-docs'
 
 " View md files
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
-
-" ripgrep (text search)
-Plug 'jremmen/vim-ripgrep'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 
 " for Prettier
 " post install (yarn install | npm install) then load plugin only for editing supported files
 Plug 'prettier/vim-prettier', {
-	\ 'do': 'yarn install --frozen-lockfile --production',
-	\ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+  \ 'do': 'yarn install --frozen-lockfile --production',
+ 	\ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 
 " vim-unimpaired - keymappings for navigation
 Plug 'tpope/vim-unimpaired'
+
+" nvim-telescope dependencies
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 
 " List ends here. Plugins become visible to VIM after this call.
 call plug#end()
@@ -145,8 +142,6 @@ nnoremap <leader>tt :NvimTreeToggle<CR>
 :cabbr hencode :call HTMLEncode()
 :cabbr hdecode :call HTMLDecode()
 
-nnoremap <leader>md :MarkdownPreviewToggle<CR>
-
 " switch between split windows
 nnoremap <c-Left> <c-w><Left>
 nnoremap <c-Up> <c-w><Up>
@@ -154,12 +149,25 @@ nnoremap <c-Right> <c-w><Right>
 nnoremap <c-Down> <c-w><Down>
 
 " prettier
-let g:prettier#autoformat = 0
-let g:prettier#autoformat_require_pragma = 0
+"let g:prettier#autoformat = 0
+" let g:prettier#autoformat_require_pragma = 0
 
 " when running at every change you may want to disable quickfix
-let g:prettier#quickfix_enabled = 0
+" let g:prettier#quickfix_enabled = 0
 
 " navigate coc errors
 nmap <silent> <Leader>j <Plug>(coc-diagnostic-next-error)
 nmap <silent> <Leader>k <Plug>(coc-diagnostic-prev-error)
+
+" configs for MarkdownPreview
+" auto start preview when opening file
+let g:mkdp_auto_start = 1
+" only refresh preview when saving the buffer or leaving insert mode
+let g:mkdp_refresh_slow = 1
+
+" configs for telescope
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fs <cmd>Telescope grep_string<cr>
+nnoremap <leader>gd <cmd>Telescope lsp_definitions<cr>
+nnoremap <leader>gi <cmd>Telescope lsp_implementations<cr>
