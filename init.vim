@@ -7,7 +7,7 @@ Plug 'neovim/nvim-lspconfig'
 
 " Declare the list of plugins.
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-pairs', 'coc-haxe']  " list of CoC extensions needed
+" let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-format-json', 'coc-pairs']  " list of CoC extensions needed
 
 " icons to show in file tree
 Plug 'nvim-tree/nvim-web-devicons' "icons for file tree
@@ -41,8 +41,10 @@ Plug 'tpope/vim-unimpaired'
 
 " nvim-telescope dependencies
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+
+Plug 'github/copilot.vim'
 
 " List ends here. Plugins become visible to VIM after this call.
 call plug#end()
