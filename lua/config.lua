@@ -121,3 +121,9 @@ require "lualine".setup {
 		lualine_z = {"searchcount"}
 	}
 }
+
+require("CopilotChat").setup {
+	window = {
+		width = 0.3,
+	}
+}
