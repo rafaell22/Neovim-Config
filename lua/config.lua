@@ -94,7 +94,7 @@ if vim.g.vscode == nil then
 
 end
 
-require "nvim-treesitter.configs".setup {
+require "nvim-treesitter.config".setup {
 	ensure_installed = { "javascript", "json", "html", "css", "lua" },
 	auto_install = true,
 	highlight = {
