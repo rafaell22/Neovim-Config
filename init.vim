@@ -26,43 +26,88 @@ Plug 'sheerun/vim-polyglot'
 
 " for syntax highlight
 Plug 'nvim-treesitter/nvim-treesitter'
+let mapleader=" "
 
-" View md files
+" ==============================================================================
+" PLUGINS
+" ==============================================================================
+call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+
+" LSP and completion
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" File explorer
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
+
+" Status line
+Plug 'nvim-lualine/lualine.nvim'
+
+" Comments
+Plug 'preservim/nerdcommenter'
+
+" Syntax highlighting
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+" Markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 
-" for Prettier
-" post install (yarn install | npm install) then load plugin only for editing supported files
+" Code formatter
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install --frozen-lockfile --production',
- 	\ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 
-" vim-unimpaired - keymappings for navigation
+" Navigation helpers
 Plug 'tpope/vim-unimpaired'
 
-" nvim-telescope dependencies
+" Fuzzy finder
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+Plug 'nvim-telescope/telescope.nvim'
 
-Plug 'github/copilot.vim'
-Plug 'CopilotC-Nvim/CopilotChat.nvim'
+" AI assistance
+"Plug 'github/copilot.vim'
+Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
 
-" List ends here. Plugins become visible to VIM after this call.
 call plug#end()
 
-nnoremap <leader>cd :lcd %:h<CR>
+" ==============================================================================
+" EDITOR SETTINGS
+" ==============================================================================
+set tabstop=2
+set softtabstop=2
+set expandtab
+set shiftwidth=2
+set smarttab
+set number
+set relativenumber
+set clipboard=unnamed
+set fileformats=unix,dos
+set fillchars+=vert:│
+set sessionoptions+=tabpages,globals
+set switchbuf+=usetab,newtab
+set termguicolors
+set updatetime=300
+set signcolumn=yes
 
-lua require('config')
+filetype plugin indent on
 
-nnoremap <silent> <leader>nhl :nohlsearch<CR>
-nnoremap <silent> <leader>j :CocCommand formatJson<CR>
+" ==============================================================================
+" HIGHLIGHTING
+" ==============================================================================
+highlight VertSplit ctermbg=NONE guibg=NONE
+highlight CocFloating ctermbg=darkgrey guibg=#222222
+highlight CocSearch ctermfg=Red guifg=#FF0000
 
+" ==============================================================================
+" COC.NVIM CONFIGURATION
+" ==============================================================================
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Accept coc suggestions
+" Tab completion with coc
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
@@ -70,107 +115,96 @@ inoremap <silent><expr> <TAB>
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
-" set editor env variables
-set tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
-set fillchars+=vert:│
-set number
-set relativenumber
-set clipboard=unnamed
-set fileformats=unix,dos
+" Diagnostics navigation
+nmap <silent> <Leader>dn <Plug>(coc-diagnostic-next)
+nmap <silent> <Leader>dp <Plug>(coc-diagnostic-prev)
+nmap <silent> <Leader>de <Plug>(coc-diagnostic-next-error)
 
-" highlight VertSplit guibg=Orange guifg=Black ctermbg=6 ctermfg=0
-highlight VertSplit ctermbg=NONE guibg=NONE
+" ==============================================================================
+" KEYMAPS - FILE OPERATIONS
+" ==============================================================================
+nnoremap <leader>cd :lcd %:h<CR>
+nnoremap <silent> <leader>nhl :nohlsearch<CR>
 
-filetype plugin on
+" ==============================================================================
+" KEYMAPS - EDITING
+" ==============================================================================
+" Select all
+nnoremap <leader>all ggVG
 
-" configure Taboo for tabs
-set sessionoptions+=tabpages,globals
-
-" configure quickfix to open in a new tab
-noremap <leader>qf :copen<CR>:tab split<CR>:TabooRename Quickfix<CR>
-
-" configure quickfix to open files in a new tab or focus an existing tab if the file is already open
-:set switchbuf+=usetab,newtab
-" autocmd FileType qf nnoremap <buffer> <Enter> " <C-W><Enter><C-W>T
-
-" refresh/update quickfix results after changes
-command! -nargs=0 -bar QFRefresh execute get(getqflist({'title':1}), 'title')
-
-" shortcuts for normal mode, work with tabs
-noremap <C-t> <Esc>:tabnew<CR>
-noremap <C-F4> <Esc>:tabclose<CR>
-
-" paste buffer content when in insert mode
-inoremap <C-v> <Esc>pbi
-
-" copy v-mode selected content to windows clipboard
-noremap <C-c> "*y
-
-" paste from windows buffer
-noremap <C-v> "*p
-
-" select all content in file
-noremap <leader>all ggVG
-
-" inverse tab with Shift + Tab
-" normal tab with Tab
-" for normal mode
-nnoremap <S-Tab> <<
-nnoremap <Tab> >>
-" for insert mode
-inoremap <S-Tab> <C-d>
-" for visual mode
-vnoremap <S-Tab> <<
-vnoremap <Tab> >
-
-" add semi-colon at the end of the current line
+" Add semicolon at end
 nnoremap <leader>; <End>a;<Esc>
 
-" add new line ahead of cursor position
+" Add new line
 nnoremap <leader><CR> a<CR><Up><End><CR>
 
-" enter virtual mode and select everything from cursor forward
-inoremap <S-End> <Esc>v$
-nnoremap <S-End> <Esc>v$
+" ==============================================================================
+" KEYMAPS - INDENTATION
+" ==============================================================================
+" Normal mode
+nnoremap <Tab> >>
+nnoremap <S-Tab> <<
 
-" undo change in insert mode
+" Insert mode
+inoremap <S-Tab> <C-d>
+
+" Visual mode - keep selection after indent
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+" ==============================================================================
+" KEYMAPS - CLIPBOARD
+" ==============================================================================
+inoremap <C-v> <Esc>pa
+vnoremap <C-c> "*y
+nnoremap <C-v> "*p
+
+" ==============================================================================
+" KEYMAPS - UNDO/REDO
+" ==============================================================================
 inoremap <C-z> <Esc>ui
 nnoremap <C-z> u
 nnoremap <C-S-z> <C-r>
 
-" toggle nerd tree
+" ==============================================================================
+" KEYMAPS - SELECTION
+" ==============================================================================
+inoremap <S-End> <Esc>v$
+nnoremap <S-End> v$
+
+" ==============================================================================
+" KEYMAPS - WINDOW NAVIGATION
+" ==============================================================================
+nnoremap <C-Left> <C-w><Left>
+nnoremap <C-Up> <C-w><Up>
+nnoremap <C-Right> <C-w><Right>
+nnoremap <C-Down> <C-w><Down>
+
+" ==============================================================================
+" KEYMAPS - TABS
+" ==============================================================================
+nnoremap <C-t> :tabnew<CR>
+nnoremap <C-F4> :tabclose<CR>
+
+" ==============================================================================
+" KEYMAPS - PLUGINS
+" ==============================================================================
+" NvimTree
 nnoremap <leader>tt :NvimTreeToggle<CR>
 
-" shortcuts for decoding/encoding HTML
-:cabbr hencode :call HTMLEncode()
-:cabbr hdecode :call HTMLDecode()
-
-" switch between split windows
-nnoremap <c-Left> <c-w><Left>
-nnoremap <c-Up> <c-w><Up>
-nnoremap <c-Right> <c-w><Right>
-nnoremap <c-Down> <c-w><Down>
-
-" prettier
-"let g:prettier#autoformat = 0
-" let g:prettier#autoformat_require_pragma = 0
-
-" when running at every change you may want to disable quickfix
-" let g:prettier#quickfix_enabled = 0
-
-" navigate coc errors
-nmap <silent> <Leader>j <Plug>(coc-diagnostic-next-error)
-nmap <silent> <Leader>k <Plug>(coc-diagnostic-prev-error)
-
-" configs for MarkdownPreview
-" auto start preview when opening file
-let g:mkdp_auto_start = 1
-" only refresh preview when saving the buffer or leaving insert mode
-let g:mkdp_refresh_slow = 1
-
-" configs for telescope
+" Telescope
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fs <cmd>Telescope grep_string<cr>
-nnoremap <leader>gd <cmd>Telescope lsp_definitions<cr>
-nnoremap <leader>gi <cmd>Telescope lsp_implementations<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+
+" ==============================================================================
+" MARKDOWN PREVIEW
+" ==============================================================================
+let g:mkdp_auto_start = 1
+let g:mkdp_refresh_slow = 1
+
+" ==============================================================================
+" LOAD LUA CONFIGURATION
+" ==============================================================================
+lua require('config')
