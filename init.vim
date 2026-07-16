@@ -1,36 +1,19 @@
 let mapleader=" "
 
+" Disable vim-polyglot's highlighting/indent for languages nvim-treesitter
+" already covers (see ensure_installed in lua/config.lua) to avoid the two
+" plugins doing redundant/conflicting work. Must be set before polyglot loads.
+let g:polyglot_disabled = ['lua', 'vim', 'javascript', 'typescript', 'html', 'css', 'json', 'markdown', 'python', 'bash']
+
 " Plugins will be downloaded under the specified directory.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
-Plug 'neovim/nvim-lspconfig'
-
-" Declare the list of plugins.
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-format-json', 'coc-pairs']  " list of CoC extensions needed
-
-" icons to show in file tree
-Plug 'nvim-tree/nvim-web-devicons' "icons for file tree
-
-" file tree
-Plug 'nvim-tree/nvim-tree.lua'
-
-" Bottom status bar
-Plug 'nvim-lualine/lualine.nvim'
-
-" comment code
-Plug 'preservim/nerdcommenter'
-
-" Syntax highlight
-Plug 'sheerun/vim-polyglot'
-
-" for syntax highlight
-Plug 'nvim-treesitter/nvim-treesitter'
-let mapleader=" "
+" Colorscheme (matches lualine's ayu_mirage theme, set in lua/config.lua)
+Plug 'Shatur/neovim-ayu'
 
 " LSP and completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-format-json', 'coc-pairs']  " list of CoC extensions needed
+let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-format-json', 'coc-pairs']  " list of CoC extensions needed
 
 " For Vue
 Plug 'posva/vim-vue'

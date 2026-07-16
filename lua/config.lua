@@ -7,8 +7,6 @@ vim.g.loaded_netrwPlugin = 1
 -- doesn't depend on other software being installed.
 vim.g.sqlite_clib_path = vim.fn.stdpath('config') .. '/sqlite3.dll'
 
-require'nvim-web-devicons'.get_icons()
-
 -- ==============================================================================
 -- NVIM-TREE CONFIGURATION
 -- ==============================================================================
@@ -142,6 +140,12 @@ end
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
 
 -- ==============================================================================
+-- COLORSCHEME
+-- ==============================================================================
+-- wrapped in pcall so a fresh clone (before :PlugInstall) doesn't error out
+pcall(vim.cmd.colorscheme, 'ayu-mirage')
+
+-- ==============================================================================
 -- TREESITTER CONFIGURATION
 -- ==============================================================================
 require('nvim-treesitter.config').setup({
@@ -169,9 +173,12 @@ require('nvim-treesitter.config').setup({
   incremental_selection = {
     enable = true,
     keymaps = {
+      -- scope_incremental was '<TAB>', which is buffer-local and silently
+      -- shadowed the global visual-mode `Tab -> >gv` indent mapping (init.vim)
+      -- in every treesitter-parsed buffer. Moved off Tab to stop the clash.
       init_selection = '<CR>',
       node_incremental = '<CR>',
-      scope_incremental = '<TAB>',
+      scope_incremental = '<C-space>',
       node_decremental = '<S-CR>',
     },
   },
@@ -251,16 +258,16 @@ pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'smart_history')
 
 -- ==============================================================================
--- KIRO CLI CONFIGURATION
+-- CLAUDE CODE CLI CONFIGURATION
 -- ==============================================================================
--- Open Kiro CLI in a horizontal split
+-- Open Claude Code in a horizontal split
 vim.keymap.set("n", "<leader>ki", function()
 	vim.cmd("botright split")
 	vim.cmd("resize 20")
 	vim.cmd("terminal")
-	vim.fn.chansend(vim.b.terminal_job_id, "kiro-cli\n")
+	vim.fn.chansend(vim.b.terminal_job_id, "claude\n")
 	vim.cmd("startinsert")
-end, { desc = "Open Kiro CLI" })
+end, { desc = "Open Claude Code" })
 
 -- Escape terminal mode back to normal mode
 vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]])
