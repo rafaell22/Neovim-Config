@@ -1,14 +1,41 @@
 let mapleader=" "
 
-" ==============================================================================
-" PLUGINS
-" ==============================================================================
+" Plugins will be downloaded under the specified directory.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
+Plug 'neovim/nvim-lspconfig'
+
+" Declare the list of plugins.
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-format-json', 'coc-pairs']  " list of CoC extensions needed
+
+" icons to show in file tree
+Plug 'nvim-tree/nvim-web-devicons' "icons for file tree
+
+" file tree
+Plug 'nvim-tree/nvim-tree.lua'
+
+" Bottom status bar
+Plug 'nvim-lualine/lualine.nvim'
+
+" comment code
+Plug 'preservim/nerdcommenter'
+
+" Syntax highlight
+Plug 'sheerun/vim-polyglot'
+
+" for syntax highlight
+Plug 'nvim-treesitter/nvim-treesitter'
+let mapleader=" "
 
 " LSP and completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-format-json', 'coc-pairs']  " list of CoC extensions needed
+
+" For Vue
+Plug 'posva/vim-vue'
+Plug 'yaegassy/coc-volar', { 'do': 'yarn install --frozen-lockfile' }
+Plug 'yaegassy/coc-volar-tools', { 'do': 'yarn install --frozen-lockfile' }
 
 " File explorer
 Plug 'nvim-tree/nvim-web-devicons'
@@ -25,7 +52,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'sheerun/vim-polyglot'
 
 " Markdown preview
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install' }
 
 " Code formatter
 Plug 'prettier/vim-prettier', {
@@ -39,6 +66,9 @@ Plug 'tpope/vim-unimpaired'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope.nvim'
+" Context-aware (per picker + cwd) prompt history for Telescope
+Plug 'kkharji/sqlite.lua'
+Plug 'nvim-telescope/telescope-smart-history.nvim'
 
 call plug#end()
 
@@ -60,6 +90,7 @@ set switchbuf+=usetab,newtab
 set termguicolors
 set updatetime=300
 set signcolumn=yes
+set shell=wsl.exe
 
 filetype plugin indent on
 
@@ -90,6 +121,26 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 nmap <silent> <Leader>dn <Plug>(coc-diagnostic-next)
 nmap <silent> <Leader>dp <Plug>(coc-diagnostic-prev)
 nmap <silent> <Leader>de <Plug>(coc-diagnostic-next-error)
+
+" Code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Open definition in a split
+nnoremap <silent> <leader>gd :call CocActionAsync('jumpDefinition', 'vsplit')<CR>
+nnoremap <silent> <leader>gs :call CocActionAsync('jumpDefinition', 'split')<CR>
+
+" Show documentation for the symbol under the cursor
+nnoremap <silent> K :call ShowDocumentation()<CR>
+function! ShowDocumentation() abort
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
 
 " ==============================================================================
 " KEYMAPS - FILE OPERATIONS
@@ -172,8 +223,10 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 " ==============================================================================
 " MARKDOWN PREVIEW
 " ==============================================================================
-let g:mkdp_auto_start = 1
+let g:mkdp_auto_start = 0
 let g:mkdp_refresh_slow = 1
+let g:mkdp_auto_close = 0
+let g:mkdp_port = '8089'
 
 " ==============================================================================
 " LOAD LUA CONFIGURATION
