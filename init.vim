@@ -1,40 +1,14 @@
 let mapleader=" "
 
-" Plugins will be downloaded under the specified directory.
-call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
-
-Plug 'neovim/nvim-lspconfig'
-
-" Declare the list of plugins.
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-format-json', 'coc-pairs']  " list of CoC extensions needed
-
-" icons to show in file tree
-Plug 'nvim-tree/nvim-web-devicons' "icons for file tree
-
-" file tree
-Plug 'nvim-tree/nvim-tree.lua'
-
-" Bottom status bar
-Plug 'nvim-lualine/lualine.nvim'
-
-" comment code
-Plug 'preservim/nerdcommenter'
-
-" Syntax highlight
-Plug 'sheerun/vim-polyglot'
-
-" for syntax highlight
-Plug 'nvim-treesitter/nvim-treesitter'
-let mapleader=" "
-
 " ==============================================================================
 " PLUGINS
 " ==============================================================================
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
+
 " LSP and completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" let g:coc_global_extensions = ['coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-format-json', 'coc-pairs']  " list of CoC extensions needed
 
 " File explorer
 Plug 'nvim-tree/nvim-web-devicons'
@@ -48,6 +22,7 @@ Plug 'preservim/nerdcommenter'
 
 " Syntax highlighting
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'sheerun/vim-polyglot'
 
 " Markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
@@ -64,10 +39,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope.nvim'
-
-" AI assistance
-"Plug 'github/copilot.vim'
-Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
 
 call plug#end()
 

@@ -159,31 +159,6 @@ require('lualine').setup({
 })
 
 -- ==============================================================================
--- COPILOT CHAT CONFIGURATION
--- ==============================================================================
-require('CopilotChat').setup({
-	model = 'claude-sonnet-4.5',
-	window = {
-		layout = 'vertical',
-		width = 0.3,
-	},
-	headers = {
-    user = '👤 You',
-    assistant = '🤖 Copilot',
-    tool = '🔧 Tool',
-  }
-})
-
--- CopilotChat keymaps
-vim.keymap.set('n', '<leader>cc', ':CopilotChatToggle<CR>', { desc = 'Toggle Copilot Chat' })
-vim.keymap.set('v', '<leader>ce', ':CopilotChatExplain<CR>', { desc = 'Explain selection' })
-vim.keymap.set('v', '<leader>cr', ':CopilotChatReview<CR>', { desc = 'Review selection' })
-vim.keymap.set('v', '<leader>cf', ':CopilotChatFix<CR>', { desc = 'Fix selection' })
-vim.keymap.set('v', '<leader>co', ':CopilotChatOptimize<CR>', { desc = 'Optimize selection' })
-vim.keymap.set('n', '<leader>cd', ':CopilotChatDocs<CR>', { desc = 'Generate docs' })
-vim.keymap.set('n', '<leader>ct', ':CopilotChatTests<CR>', { desc = 'Generate tests' })
-
--- ==============================================================================
 -- TELESCOPE CONFIGURATION
 -- ==============================================================================
 require('telescope').setup({
