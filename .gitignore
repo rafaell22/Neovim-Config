@@ -1,0 +1,8 @@
+# Local sqlite3 library for telescope-smart-history (platform-specific binary)
+sqlite3.dll
+
+# Telescope smart-history database (runtime state).
+# Normally lives in nvim-data, but ignore it here too just in case.
+databases/
+*.sqlite3
+telescope_history*

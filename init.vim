@@ -28,13 +28,13 @@ Plug 'sheerun/vim-polyglot'
 Plug 'nvim-treesitter/nvim-treesitter'
 let mapleader=" "
 
-" ==============================================================================
-" PLUGINS
-" ==============================================================================
-call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
-
 " LSP and completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" For Vue
+Plug 'posva/vim-vue'
+Plug 'yaegassy/coc-volar', { 'do': 'yarn install --frozen-lockfile' }
+Plug 'yaegassy/coc-volar-tools', { 'do': 'yarn install --frozen-lockfile' }
 
 " File explorer
 Plug 'nvim-tree/nvim-web-devicons'
@@ -50,7 +50,7 @@ Plug 'preservim/nerdcommenter'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Markdown preview
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install' }
 
 " Code formatter
 Plug 'prettier/vim-prettier', {
@@ -64,10 +64,13 @@ Plug 'tpope/vim-unimpaired'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope.nvim'
+" Context-aware (per picker + cwd) prompt history for Telescope
+Plug 'kkharji/sqlite.lua'
+Plug 'nvim-telescope/telescope-smart-history.nvim'
 
 " AI assistance
 "Plug 'github/copilot.vim'
-Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
+"Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
 
 call plug#end()
 
@@ -89,6 +92,7 @@ set switchbuf+=usetab,newtab
 set termguicolors
 set updatetime=300
 set signcolumn=yes
+set shell=wsl.exe
 
 filetype plugin indent on
 
@@ -119,6 +123,26 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 nmap <silent> <Leader>dn <Plug>(coc-diagnostic-next)
 nmap <silent> <Leader>dp <Plug>(coc-diagnostic-prev)
 nmap <silent> <Leader>de <Plug>(coc-diagnostic-next-error)
+
+" Code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Open definition in a split
+nnoremap <silent> <leader>gd :call CocActionAsync('jumpDefinition', 'vsplit')<CR>
+nnoremap <silent> <leader>gs :call CocActionAsync('jumpDefinition', 'split')<CR>
+
+" Show documentation for the symbol under the cursor
+nnoremap <silent> K :call ShowDocumentation()<CR>
+function! ShowDocumentation() abort
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
 
 " ==============================================================================
 " KEYMAPS - FILE OPERATIONS
@@ -201,8 +225,10 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 " ==============================================================================
 " MARKDOWN PREVIEW
 " ==============================================================================
-let g:mkdp_auto_start = 1
+let g:mkdp_auto_start = 0
 let g:mkdp_refresh_slow = 1
+let g:mkdp_auto_close = 0
+let g:mkdp_port = '8089'
 
 " ==============================================================================
 " LOAD LUA CONFIGURATION
